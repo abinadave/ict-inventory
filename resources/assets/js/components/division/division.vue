@@ -16,7 +16,11 @@
 
                           <!-- Tab panes -->
                           <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="home">...</div>
+                            <div role="tabpanel" class="tab-pane active" id="home">
+                                <div style="padding: 20px">
+                                    <division-list></division-list>
+                                </div>
+                            </div>
                             <div role="tabpanel" class="tab-pane" id="profile">
                                 <div style="padding: 20px">
                                     <add-division></add-division>
@@ -34,12 +38,14 @@
 
 <script>
     import addDivision from './add_division.vue'
+    import divisionList from './division_list.vue'
     export default {
         mounted() {
-            this.$store.commit('FETCH_DIVISIONS')
+            this.$store.commit('FETCH_DIVISIONS');
         },
         components: {
-            'add-division': addDivision
+            'add-division': addDivision,
+            'division-list': divisionList
         }
     }
 </script>

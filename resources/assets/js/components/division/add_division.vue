@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    import alertify from 'alertify.js'
     export default {
         mounted() {
 
@@ -25,10 +26,25 @@
         methods: {
             submitForm(){
                 let self = this;
-                self.$store.commit({
-                    type: 'CREATE_DIVISION',
-                    form: self.form
-                });
+                
+                self.$http.post('/division', {
+                    division_name: self.form.division_name
+                  }).then((resp) => {
+                    if (resp.status === 200) {
+                      let json = resp.body;
+                      if (json.id > 0) {
+                          console.log(json);
+                          self.form.division_name = '';
+                          alertify.success(json.division_name + ' Division Created!');
+                          self.$store.commit({
+                              type: 'PUSH_DIVISION',
+                              division: json
+                          });
+                      }
+                    }
+                  }, (resp) => {
+                    console.log(resp);
+                  });
             }
         }
     }

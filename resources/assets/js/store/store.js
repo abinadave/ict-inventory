@@ -24,20 +24,14 @@ export const store = new Vuex.Store({
 				}
 			});
 		},
-		CREATE_DIVISION(state, payload){
+		PUSH_DIVISION(state, payload){
 			let self = this;
-			Vue.http.post('/division', {
-				division_name: payload.form.division_name
-			}).then((resp) => {
-				if (resp.status === 200) {
-					let json = resp.body;
-					if (json.id > 0) {
-						state.divisions.unshift(json);
-					}
-				}
-			}, (resp) => {
-				console.log(resp);
-			})
+			state.divisions.unshift(payload.division);
+		}
+	},
+	getters: {
+		divisions(state){
+			return state.divisions;
 		}
 	}
 });
