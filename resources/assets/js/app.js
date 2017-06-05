@@ -23,6 +23,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').
 import { store } from './store/store'
 import ItemComponent from './components/items/item.vue'
 import DivisionComponent from './components/division/division.vue'
+import IctItemNameComponent from './components/items/item_names.vue'
 window.router = new VueRouter({
   routes: [
     { 
@@ -36,6 +37,10 @@ window.router = new VueRouter({
     {
     	path: '/divs',
     	component: DivisionComponent
+    },
+    {
+      path: '/item-names',
+      component: IctItemNameComponent
     }
    
   ]

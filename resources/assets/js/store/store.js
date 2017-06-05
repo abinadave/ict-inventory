@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
 	mutations: {
 		FETCH_DIVISIONS(state){
 			let self = this;
+			state.divisions = [];
 			Vue.http.get('/division').then((resp) => {
 				if (resp.status === 200) {
 					let json = resp.body;
@@ -26,6 +27,7 @@ export const store = new Vuex.Store({
 		},
 		PUSH_DIVISION(state, payload){
 			let self = this;
+
 			state.divisions.unshift(payload.division);
 		}
 	},

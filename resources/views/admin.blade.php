@@ -4,14 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSRF Token -->
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
-
     <title>Administrator page ICT inventory</title>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/libs/tags-input-master/tags-input.css">
 </head>
 <body>
     <div id="app">
@@ -37,7 +35,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         &nbsp;
-                        <li> <router-link to="/items">ICT Items</router-link></li>
+                        <li> <router-link to="/items">Inventory</router-link></li>
+                        <li> <router-link to="/item-names">ICT Item Names</router-link></li>
                         <li> <router-link to="/divs">Divisions</router-link></li>
 
                     </ul>

@@ -13,10 +13,13 @@
 
 Route::get('/', 'HomeController@index');
 
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('division', 'DivisionController@fetch');
     Route::post('division', 'DivisionController@insert');
+    Route::post('ict_item', 'IctItemNameController@insert');
 });	

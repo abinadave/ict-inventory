@@ -36,7 +36,7 @@
     import addItemComponent from './add_item.vue'
     export default {
         mounted() {
-
+            this.$store.commit('FETCH_DIVISIONS');
         },
         components: {
             'add-item': addItemComponent
