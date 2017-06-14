@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class IctItemName extends Model
+class IctSpecification extends Model
 {
-    protected $table = 'ict_item_names';
+    protected $table = 'ict_specifications';
     protected $primaryKey = 'id';
 }

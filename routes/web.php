@@ -22,4 +22,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('division', 'DivisionController@fetch');
     Route::post('division', 'DivisionController@insert');
     Route::post('ict_item', 'IctItemNameController@insert');
+    Route::get('ict_items', 'IctItemNameController@fetchall');
 });	
