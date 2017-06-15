@@ -13,7 +13,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -38,7 +38,7 @@
                         <li> <router-link to="/items">Inventory</router-link></li>
                         <li> <router-link to="/item-names">ICT Item Names</router-link></li>
                         <li> <router-link to="/divs">Divisions</router-link></li>
-
+                        <li> <router-link to="/employees">Employee</router-link></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

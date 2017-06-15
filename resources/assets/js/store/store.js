@@ -7,11 +7,20 @@ export const store = new Vuex.Store({
 	state: {
 		divisions: [],
 		ict_item_names: [],
-		ict_specifications: []
+		ict_specifications: [],
+		current_specs: []
 	},
 	mutations: {
+		GET_SPECIFICATIONS(state, payload){
+			let self = this;
+			let iii = payload.ict_item_id;
+			let rs = _.filter(state.ict_specifications, { ict_item_id: iii });
+			state.current_specs = rs;
+		},
 		FETCH_ICT_ITEMS(state){
 			let self = this;
+			state.ict_item_names = [];
+			state.ict_specifications = [];
 			Vue.http.get('/ict_items').then((resp) => {
 				if (resp.status === 200) {
 					let json = resp.body;
@@ -55,7 +64,6 @@ export const store = new Vuex.Store({
 		},
 		PUSH_DIVISION(state, payload){
 			let self = this;
-
 			state.divisions.unshift(payload.division);
 		}
 	},
@@ -68,6 +76,9 @@ export const store = new Vuex.Store({
 		},
 		ictSpecs(state){
 			return state.ict_specifications;
+		},
+		currentSpecs(state){
+			return state.current_specs;
 		}
 	}
 });

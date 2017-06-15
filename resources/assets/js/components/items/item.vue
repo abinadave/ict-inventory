@@ -37,6 +37,7 @@
     export default {
         mounted() {
             this.$store.commit('FETCH_DIVISIONS');
+            this.$store.commit('FETCH_ICT_ITEMS');
         },
         components: {
             'add-item': addItemComponent

@@ -16,27 +16,42 @@
             </div>
             <div class="form-group col-md-4">
               <label class="control-label">ICT ITEM (NAME)</label>
-              <select class="form-control">
+              <select v-model="ictItemName" class="form-control">
                   <option>Choose Ict Item</option>
-                  <option v-for="ict in ict_item_names">
+                  <option :value="ict.id" v-for="ict in ict_item_names">
                       {{ ict.name }}
                   </option>
               </select>
             </div>
             <div>
-                <table>
+                <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
                             <th>-</th>
-                            <th>SPECIFICATION- {{ ict_specifications.length }}</th>
+                            <th>SPECIFICATION [{{ current_specs.length }}]</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="">
-                            <!-- <td>{{}}</td> -->
+                        <tr v-for="specs in current_specs">
+                            <td style="font-weight: bolder">{{ specs.specification }}</td>
+                            <td><input type="" class="input-sm form-control"></td>
                         </tr>
                     </tbody>
+
                 </table>
+                <label>
+                    Serviceable
+                    <select class="form-control">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                    Inventory Date
+                    <input type="date" class="form-control">
+                </label>
+                <hr>
+                <button @click="addIctITem" type="button" class="btn btn-primary btn-sm">ADD ICT ITEM</button>
             </div>
         </form>
     </div>
@@ -45,8 +60,18 @@
 <script>
     export default {
         mounted() {
-            this.$store.commit('FETCH_ICT_ITEMS');
-            this.$store.commit('FETCH_DIVISIONS');
+            
+        },
+        data(){
+            return {
+                ictItemName: ''
+            }
+        },
+        methods: {
+            addIctITem(){
+                let self = this;
+                alert(1)
+            }
         },
         computed: {
             ict_item_names(){
@@ -57,6 +82,18 @@
             },
             ict_specifications(){
                 return this.$store.getters.ictSpecs;
+            },
+            current_specs(){
+                return this.$store.getters.currentSpecs;
+            }
+        },
+        watch: {
+            'ictItemName': function(newVal){
+                let self = this;
+                self.$store.commit({
+                    type: 'GET_SPECIFICATIONS',
+                    ict_item_id: newVal
+                });
             }
         }
     }

@@ -10570,13 +10570,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_division_division_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_division_division_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_items_item_names_vue__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_items_item_names_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_items_item_names_vue__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_employee_employee_vue__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_employee_employee_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_employee_employee_vue__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 __webpack_require__(38);
 
 window.Vue = __webpack_require__(9);
@@ -10596,6 +10596,8 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#csrf-token').
 
 
 
+
+
 window.router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: [{
     path: '/',
@@ -10609,6 +10611,9 @@ window.router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */](
   }, {
     path: '/item-names',
     component: __WEBPACK_IMPORTED_MODULE_5__components_items_item_names_vue___default.a
+  }, {
+    path: '/employees',
+    component: __WEBPACK_IMPORTED_MODULE_6__components_employee_employee_vue___default.a
   }]
 });
 
@@ -11673,13 +11678,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        this.$store.commit('FETCH_ICT_ITEMS');
-        this.$store.commit('FETCH_DIVISIONS');
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            ictItemName: ''
+        };
     },
 
+    methods: {
+        addIctITem: function addIctITem() {
+            var self = this;
+            alert(1);
+        }
+    },
     computed: {
         ict_item_names: function ict_item_names() {
             return this.$store.getters.ictItemNames;
@@ -11689,6 +11717,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         ict_specifications: function ict_specifications() {
             return this.$store.getters.ictSpecs;
+        },
+        current_specs: function current_specs() {
+            return this.$store.getters.currentSpecs;
+        }
+    },
+    watch: {
+        'ictItemName': function ictItemName(newVal) {
+            var self = this;
+            self.$store.commit({
+                type: 'GET_SPECIFICATIONS',
+                ict_item_id: newVal
+            });
         }
     }
 });
@@ -11740,6 +11780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         this.$store.commit('FETCH_DIVISIONS');
+        this.$store.commit('FETCH_ICT_ITEMS');
     },
 
     components: {
@@ -11917,11 +11958,20 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
 		divisions: [],
 		ict_item_names: [],
-		ict_specifications: []
+		ict_specifications: [],
+		current_specs: []
 	},
 	mutations: {
+		GET_SPECIFICATIONS: function GET_SPECIFICATIONS(state, payload) {
+			var self = this;
+			var iii = payload.ict_item_id;
+			var rs = _.filter(state.ict_specifications, { ict_item_id: iii });
+			state.current_specs = rs;
+		},
 		FETCH_ICT_ITEMS: function FETCH_ICT_ITEMS(state) {
 			var self = this;
+			state.ict_item_names = [];
+			state.ict_specifications = [];
 			__WEBPACK_IMPORTED_MODULE_0_vue___default.a.http.get('/ict_items').then(function (resp) {
 				if (resp.status === 200) {
 					var json = resp.body;
@@ -11965,7 +12015,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 		},
 		PUSH_DIVISION: function PUSH_DIVISION(state, payload) {
 			var self = this;
-
 			state.divisions.unshift(payload.division);
 		}
 	},
@@ -11978,6 +12027,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 		},
 		ictSpecs: function ictSpecs(state) {
 			return state.ict_specifications;
+		},
+		currentSpecs: function currentSpecs(state) {
+			return state.current_specs;
 		}
 	}
 });
@@ -42382,10 +42434,47 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "control-label"
   }, [_vm._v("ICT ITEM (NAME)")]), _vm._v(" "), _c('select', {
-    staticClass: "form-control"
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.ictItemName),
+      expression: "ictItemName"
+    }],
+    staticClass: "form-control",
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.ictItemName = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
   }, [_c('option', [_vm._v("Choose Ict Item")]), _vm._v(" "), _vm._l((_vm.ict_item_names), function(ict) {
-    return _c('option', [_vm._v("\n                  " + _vm._s(ict.name) + "\n              ")])
-  })], 2)]), _vm._v(" "), _c('div', [_c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("-")]), _vm._v(" "), _c('th', [_vm._v("SPECIFICATION- " + _vm._s(_vm.ict_specifications.length))])])]), _vm._v(" "), _vm._m(1)])])])])
+    return _c('option', {
+      domProps: {
+        "value": ict.id
+      }
+    }, [_vm._v("\n                  " + _vm._s(ict.name) + "\n              ")])
+  })], 2)]), _vm._v(" "), _c('div', [_c('table', {
+    staticClass: "table table-hover table-condensed"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("-")]), _vm._v(" "), _c('th', [_vm._v("SPECIFICATION [" + _vm._s(_vm.current_specs.length) + "]")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.current_specs), function(specs) {
+    return _c('tr', [_c('td', {
+      staticStyle: {
+        "font-weight": "bolder"
+      }
+    }, [_vm._v(_vm._s(specs.specification))]), _vm._v(" "), _vm._m(1, true)])
+  }))]), _vm._v(" "), _vm._m(2), _vm._v("       \n            "), _vm._m(3), _vm._v(" "), _c('hr'), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary btn-sm",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.addIctITem
+    }
+  }, [_vm._v("ADD ICT ITEM")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group col-md-4"
@@ -42398,7 +42487,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tbody', [_c('tr')])
+  return _c('td', [_c('input', {
+    staticClass: "input-sm form-control",
+    attrs: {
+      "type": ""
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', [_vm._v("\n                Serviceable\n                "), _c('select', {
+    staticClass: "form-control"
+  }, [_c('option', [_vm._v("Yes")]), _vm._v(" "), _c('option', [_vm._v("No")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', [_vm._v("\n                Inventory Date\n                "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "date"
+    }
+  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -47355,6 +47460,264 @@ var index_esm = {
 __webpack_require__(12);
 module.exports = __webpack_require__(13);
 
+
+/***/ }),
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_employee_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_employee_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__add_employee_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {},
+
+    components: {
+        'add-employee': __WEBPACK_IMPORTED_MODULE_0__add_employee_vue___default.a
+    }
+});
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(70),
+  /* template */
+  __webpack_require__(72),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\ict-inventory\\resources\\assets\\js\\components\\employee\\employee.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] employee.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fb72eb64", Component.options)
+  } else {
+    hotAPI.reload("data-v-fb72eb64", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Employee Component")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "tab-content"
+  }, [_c('div', {
+    staticClass: "tab-pane active",
+    attrs: {
+      "role": "tabpanel",
+      "id": "home"
+    }
+  }, [_c('add-employee')], 1), _vm._v(" "), _c('div', {
+    staticClass: "tab-pane",
+    attrs: {
+      "role": "tabpanel",
+      "id": "profile"
+    }
+  }, [_vm._v("...")])])])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('ul', {
+    staticClass: "nav nav-tabs",
+    attrs: {
+      "role": "tablist"
+    }
+  }, [_c('li', {
+    staticClass: "active",
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#home",
+      "aria-controls": "home",
+      "role": "tab",
+      "data-toggle": "tab"
+    }
+  }, [_vm._v("Add employee")])]), _vm._v(" "), _c('li', {
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#profile",
+      "aria-controls": "profile",
+      "role": "tab",
+      "data-toggle": "tab"
+    }
+  }, [_vm._v("Employee List")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-fb72eb64", module.exports)
+  }
+}
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(73),
+  /* template */
+  __webpack_require__(75),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\ict-inventory\\resources\\assets\\js\\components\\employee\\add_employee.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] add_employee.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5338052c", Component.options)
+  } else {
+    hotAPI.reload("data-v-5338052c", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('br'), _vm._v(" "), _c('div', {
+    staticClass: "form-group has-error col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label"
+  }, [_vm._v("Employee name")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group has-error col-md-3"
+  }, [_c('label', {
+    staticClass: "control-label"
+  }, [_vm._v("Position")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    }
+  })])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5338052c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
